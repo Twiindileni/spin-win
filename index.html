@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin and Win</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #524d4c, #0c5577);
+            color: #333;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Logo */
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        /* Thank You Message */
+        #thank-you {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        /* Wheel Container */
+        #wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            transform: rotate(0deg);
+            transition: transform 3s ease-out;
+            background-image: conic-gradient(
+                #f39c12, #3498db, #2ecc71, #e74c3c, #9b59b6, 
+                #34495e, #e67e22, #16a085, #f39c12, #3498db
+            );
+        }
+
+        /* Spin Button */
+        #spin-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s ease;
+        }
+
+        #spin-button:hover {
+            background-color: #444;
+        }
+
+        /* Result Message */
+        #message {
+            font-size: 20px;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            #logo {
+                width: 120px;
+            }
+            #thank-you {
+                font-size: 20px;
+            }
+            #wheel-container {
+                width: 250px;
+                height: 250px;
+            }
+            #spin-button {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+            #message {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #logo {
+                width: 100px;
+            }
+            #thank-you {
+                font-size: 18px;
+            }
+            #wheel-container {
+                width: 200px;
+                height: 200px;
+            }
+            #spin-button {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+            #message {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <img id="logo" src="purpose now.png" alt="Company Logo">
+
+    <!-- Thank You Message -->
+    <div id="thank-you">Thank you to all our customers for your support! Try your luck with Spin & Win!</div>
+
+    <!-- Wheel Container -->
+    <div id="wheel-container">
+        <div id="wheel"></div>
+    </div>
+
+    <!-- Spin Button -->
+    <button id="spin-button">Spin</button>
+
+    <!-- Result Message -->
+    <div id="message"></div>
+
+    <script>
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spin-button');
+        const message = document.getElementById('message');
+        const totalSegments = 50;
+        const winningSegment = Math.floor(Math.random() * totalSegments) + 1; // Random winning segment
+        let isSpinning = false;
+
+        function spin() {
+            if (isSpinning) return; // Prevent double-clicking
+            isSpinning = true;
+            message.innerText = ""; // Clear previous message
+            const randomDegree = Math.floor(Math.random() * 360) + 3600; // Rotate multiple times
+            wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                const finalSegment = Math.floor(((randomDegree % 360) / 360) * totalSegments) + 1;
+
+                if (finalSegment === winningSegment) {
+                    message.innerHTML = "Congratulations! 🎉 You won a cutting board! Take a screenshot to claim your prize.";
+                } else {
+                    message.innerHTML = "Try again! Better luck next time.";
+                }
+            }, 3000);
+        }
+
+        spinButton.addEventListener('click', spin);
+    </script>
+</body>
+</html>
